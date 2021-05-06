@@ -1,69 +1,14 @@
-function validateForm() {
-var errors=[];
-var postalCode = document.form1.toPostalCode;
-var postalCodeLen = postalCode.value.length;
-var additionalInfo = document.form1.textarea;
-var additionalInfoLen = additionalInfo.value.length;
-var goingTo = document.form1.goingTo;
-var goingToValue = goingTo.value;
-
-document.getElementById("toPostalCode").classList.remove("error");
-document.getElementById("toPostalCode").setAttribute("aria-invalid", "false");
-document.getElementById("errMsg2").innerHTML = "";
-
-document.getElementById("errMsgTA").innerHTML = "";
-document.getElementById("textarea").setAttribute("aria-invalid", "false");
-document.getElementById("textarea").classList.remove("error");
-
-document.getElementById("errMsgDD").innerHTML = "";
-document.getElementById("goingTo").setAttribute("aria-invalid", "false");
-document.getElementById("goingTo").classList.remove("error");
+function validateFormOne() {
+var petName = document.form1.petName;
 
 
-
-if(goingToValue <= 0) {
-document.getElementById("errMsgDD").innerHTML = "Please select a country";
-document.getElementById("goingTo").setAttribute("aria-invalid", "true");
-document.getElementById("goingTo").classList.add("error");
-
-errors.push(1);
+if(petNameValidation(petName, 5)) {
+document.getElementById('successMessage').innerHTML = "Information submitted successfully!";
+}
+event.preventDefault();
 }
 
-if(postalCodeLen < 7) {
-
-document.getElementById("toPostalCode").classList.add("error");
-document.getElementById("toPostalCode").setAttribute("aria-invalid", "true");
-document.getElementById("errMsg2").innerHTML = "Please enter a valid postal code.";
-errors.push(2);
-
-}
-
-if(additionalInfoLen < 1) {
-
-errors.push(3);
-document.getElementById("errMsgTA").innerHTML = "Please enter a description";
-document.getElementById("textarea").setAttribute("aria-invalid", "true");
-document.getElementById("textarea").classList.add("error");
-}
-if(errors.length > 0) {
-;
-if(errors[0] == 1) {
-document.getElementById("goingTo").focus(); 
-} else if(errors[0] == 2) {
-document.getElementById("toPostalCode").focus();
-
-} else {
-document.getElementById("textarea").focus();
-}
-return false;
-}
-
-
-return true;
-}
-
-
-function lengthValidation(petName, minlength)
+function petNameValidation(petName, minlength)
 {
 var petNameLen = petName.value.length;
 if (petNameLen < minlength)
@@ -75,16 +20,43 @@ return true;
 
 
 
-function maxCharacterLength(textarea) {
-        const maxchar = textarea.target.getAttribute('maxLength');
 
-        const maxCharacter = document.getElementById(`${textarea.target.id}-maxCharacter`);
-        maxCharacter.innerHTML = `${maxchar} characters left`;
+function petTypeValidation(petType)
+{
+var petTypeValue = petType.value;
+if (petTypeValue <= 0)
+{
+return false;
+}
+return true;
+}
 
-        const len = textarea.target.value.length;
-        if (len >= maxchar) {
-            maxCharacter.innerHTML = `Maximum characters reached`;
-        } else {
-            maxCharacter.innerHTML = `${maxchar - len} characters left`;
-        }
+function loadPetInfo() {
+var buttonText = document.getElementById("readButton").innerHTML;
+if(buttonText.includes("more")) {
+document.getElementById("readButton").innerHTML = buttonText.replace("more", "less");
+document.getElementById("readButton").setAttribute("aria-expanded", "true");
+document.getElementById('petInfo').innerHTML = "A pet, or companion animal, is an animal kept primarily for a person's company or entertainment rather than as a working animal, livestock or a laboratory animal. ... Two of the most popular pets are dogs and cats; the technical term for a cat lover is an ailurophile and a dog lover a cynophile.<br><br>There are many health benefits of owning a pet. They can increase opportunities to exercise, get outside, and socialize. Regular walking or playing with pets can decrease blood pressure, cholesterol levels, and triglyceride levels. Pets can help manage loneliness and depression by giving us companionship.";
+document.getElementById("chevron").setAttribute("src", "chevron_up.svg");
+} else {
+document.getElementById("readButton").innerHTML = buttonText.replace("less", "more");
+document.getElementById("readButton").setAttribute("aria-expanded", "false");
+document.getElementById('petInfo').innerHTML = "";
+document.getElementById("chevron").setAttribute("src", "chevron_down.svg");
+}
+event.preventDefault();
+}
+
+function copyText() {
+var cText = document.getElementById("regNoVal");
+cText.select();
+cText.setSelectionRange(0, 99999);
+document.execCommand("copy");
+document.getElementById("copyButton").focus();
+document.getElementById("announcement").innerHTML = "Your registration number is copied";
+setTimeout(function () {
+document.getElementById("announcement").innerHTML = "";
+
+}
+,2);
 }
